@@ -1,98 +1,279 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useMemo, useState } from "react";
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+// Expo Router navigation
+import { router } from "expo-router";
 
-export default function HomeScreen() {
+// React Native components
+import {
+  Image,
+  ImageBackground,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+// Recovery messages
+import recoveryMessages from "../../constants/recovery/Messages";
+
+// Counter component
+import Counter from "../../components/Counter";
+
+// Home page styles
+import styles from "../../styles/homeStyles";
+
+export default function Index() {
+  const [readButtonsAloud, setReadButtonsAloud] = useState(false);
+
+  const randomMessage = useMemo(() => {
+    return recoveryMessages[Math.floor(Math.random() * recoveryMessages.length)];
+  }, []);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
+    <ImageBackground
+      source={require("../../assets/images/backg.png")}
+      style={{ flex: 1 }}
+      resizeMode="cover"
+    >
+      <ScrollView
+        style={[styles.container, { backgroundColor: "transparent" }]}
+        contentContainerStyle={[
+          styles.contentContainer,
+          {
+            paddingTop: 26,
+            paddingBottom: 60,
+          },
+        ]}
+      >
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={require("../../assets/images/logo100.png")}
+          style={[
+            styles.profileImage,
+            {
+              marginBottom: 8,
+            },
+          ]}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <Text
+          style={[
+            styles.tagline,
+            {
+              marginTop: 0,
+              marginBottom: 12,
+            },
+          ]}
+        >
+          One day at a time.
+        </Text>
+
+        <View
+          style={{
+            width: "100%",
+            backgroundColor: "rgba(255,255,255,0.86)",
+            borderRadius: 24,
+            paddingVertical: 16,
+            paddingHorizontal: 18,
+            borderWidth: 2,
+            borderColor: "#2E7D6B",
+            marginTop: 0,
+            marginBottom: 18,
+          }}
+        >
+          <Text
+            style={{
+              color: "#123C69",
+              fontSize: 18,
+              fontWeight: "900",
+              textAlign: "center",
+              marginBottom: 8,
+            }}
+          >
+            Today’s Thought
+          </Text>
+
+          <Text
+            style={{
+              color: "#111111",
+              fontSize: 22,
+              lineHeight: 31,
+              fontWeight: "700",
+              textAlign: "center",
+            }}
+          >
+            {randomMessage}
+          </Text>
+        </View>
+
+        <Counter />
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+            marginTop: 14,
+          }}
+        >
+          <TouchableOpacity
+            style={[
+              styles.button,
+              styles.meetingButton,
+              { width: "48%", marginTop: 0 },
+            ]}
+            onPress={() => router.push("/meetings")}
+          >
+            <Text style={styles.buttonText}>Find a Meeting</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.button,
+              styles.quietButton,
+              { width: "48%", marginTop: 0 },
+            ]}
+            onPress={() => router.push("/meditation")}
+          >
+            <Text style={styles.buttonText}>Quiet Moment</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View
+          style={{
+            width: "100%",
+            marginTop: 14,
+          }}
+        >
+          <TouchableOpacity
+            style={[
+              styles.button,
+              styles.challengeButton,
+              { marginTop: 0 },
+            ]}
+            onPress={() => router.push("/give-me-something-to-do")}
+          >
+            <Text style={styles.buttonText}>Give Me Something To Do</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+            marginTop: 14,
+          }}
+        >
+          <TouchableOpacity
+            style={[
+              styles.button,
+              styles.reflectionsButton,
+              { width: "48%", marginTop: 0 },
+            ]}
+            onPress={() => router.push("/steps")}
+          >
+            <Text style={styles.buttonText}>Reflections</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.button,
+              styles.holdButton,
+              { width: "48%", marginTop: 0 },
+            ]}
+            onPress={() => router.push("/hold-the-line")}
+          >
+            <Text style={styles.crisisButtonText}>Hold the Line</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          onPress={() => setReadButtonsAloud(!readButtonsAloud)}
+          style={{
+            width: "100%",
+            backgroundColor: readButtonsAloud
+              ? "#123C69"
+              : "rgba(255,255,255,0.88)",
+            borderColor: "#123C69",
+            borderRadius: 20,
+            paddingVertical: 14,
+            paddingHorizontal: 18,
+            borderWidth: 2,
+            marginTop: 22,
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              color: readButtonsAloud ? "#ffffff" : "#123C69",
+              fontSize: 17,
+              fontWeight: "900",
+              textAlign: "center",
+            }}
+          >
+            Read Buttons Aloud: {readButtonsAloud ? "On" : "Off"}
+          </Text>
+        </TouchableOpacity>
+
+        <View
+          style={{
+            width: "100%",
+            backgroundColor: "rgba(255,255,255,0.78)",
+            borderRadius: 24,
+            paddingVertical: 22,
+            paddingHorizontal: 18,
+            borderWidth: 1,
+            borderColor: "rgba(18,60,105,0.25)",
+            marginTop: 34,
+          }}
+        >
+          <Text
+            style={{
+              color: "#123C69",
+              fontSize: 22,
+              fontWeight: "900",
+              textAlign: "center",
+              marginBottom: 12,
+            }}
+          >
+            Why Mosaic Exists
+          </Text>
+
+          <Text
+            style={{
+              color: "#111111",
+              fontSize: 18,
+              lineHeight: 29,
+              textAlign: "center",
+            }}
+          >
+            Mosaic was built by someone in recovery, for people trying to take
+            the next step forward.
+            {"\n\n"}
+            Private. Non-judgemental. No public profile. No pressure.
+          </Text>
+        </View>
+
+        <Text
+          style={[
+            styles.signature,
+            {
+              marginTop: 28,
+              marginBottom: 20,
+            },
+          ]}
+        >
+          Steve Condra{"\n"}
+          Founder / Developer
+        </Text>
+
+        <TouchableOpacity
+          style={styles.smallFooterButton}
+          onPress={() => alert("This feature is currently in development.")}
+        >
+          <Text style={styles.smallFooterButtonText}>Access Code</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </ImageBackground>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});

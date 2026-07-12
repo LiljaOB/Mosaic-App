@@ -1,112 +1,277 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { router } from "expo-router";
+import {
+  Alert,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+const games = [
+  {
+    title: "Open Season",
+    text: "Play the scope game.",
+    route: "/open-season",
+    info: "Open Season is a simple arcade-style recovery game. Move the scope, find the targets, and clear them from the screen.",
+  },
+  {
+    title: "Craving Hunter",
+    text: "Hunt the cravings.",
+    route: "/craving-hunter",
+    info: "Craving Hunter is a recovery arcade game where cravings chase people and try to pull them towards the pub. Your job is to stop the cravings and protect recovery.",
+  },
+  {
+    title: "Recovery Crew",
+    text: "Help people rebuild.",
+    route: "/recovery-crew",
+    info: "Recovery Crew is a tongue-in-cheek but heartfelt game about helping people step away from the street, build stability, and later come back to help others.",
+  },
+  {
+    title: "Sober Road",
+    text: "Make the roads safe again.",
+    info: "Sober Road is a driving game where you detect unsafe wobbling cars and activate the Sober Shield. Once a car is shielded, alcohol can no longer enter it — any beer, wine, or spirits brought inside turns into water, tea, or lemonade.",
+},
+  {
+    title: "Game 5",
+    text: "Coming soon.",
+    info: "This game space is reserved for a future recovery game.",
+  },
+  {
+    title: "Game 6",
+    text: "Coming soon.",
+    info: "This game space is reserved for a future recovery game.",
+  },
+  {
+    title: "Game 7",
+    text: "Coming soon.",
+    info: "This game space is reserved for a future recovery game.",
+  },
+  {
+    title: "Game 8",
+    text: "Coming soon.",
+    info: "This game space is reserved for a future recovery game.",
+  },
+  {
+    title: "Game 9",
+    text: "Coming soon.",
+    info: "This game space is reserved for a future recovery game.",
+  },
+  {
+    title: "Game 10",
+    text: "Coming soon.",
+    info: "This game space is reserved for a future recovery game.",
+  },
+];
 
-export default function TabTwoScreen() {
+export default function GamesScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+    <ImageBackground
+      source={require("../../assets/images/backg.png")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.title}>Games</Text>
+        <Text style={styles.subtitle}>Choose a game</Text>
+
+        <View style={styles.grid}>
+          {games.slice(0, 4).map((game) => (
+            <GameCard key={game.title} game={game} />
+          ))}
+        </View>
+
+        <View style={styles.noticeBox}>
+          <Text style={styles.noticeText}>
+            Games are for entertainment and recovery engagement only.
+          </Text>
+        </View>
+
+        <View style={styles.grid}>
+          {games.slice(4).map((game) => (
+            <GameCard key={game.title} game={game} />
+          ))}
+        </View>
+
+        <View style={styles.scoreboardBox}>
+          <Text style={styles.scoreboardTitle}>National Scoreboard</Text>
+          <Text style={styles.scoreboardText}>Coming soon.</Text>
+          <Text style={styles.scoreboardText}>International Scoreboard later.</Text>
+        </View>
+      </ScrollView>
+    </ImageBackground>
+  );
+}
+
+function GameCard({
+  game,
+}: {
+  game: {
+    title: string;
+    text: string;
+    route?: string;
+    info: string;
+  };
+}) {
+  const active = !!game.route;
+
+  return (
+    <View style={active ? styles.card : styles.cardPlaceholder}>
+      <Text style={styles.cardTitle}>{game.title}</Text>
+      <Text style={styles.cardText}>{game.text}</Text>
+
+      <TouchableOpacity
+        style={active ? styles.playButton : styles.disabledButton}
+        disabled={!active}
+        onPress={() => {
+          if (game.route) {
+            router.push(game.route as any);
+          }
+        }}
+      >
+        <Text style={styles.buttonText}>{active ? "Play" : "Soon"}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.infoButton}
+        onPress={() => Alert.alert(game.title, game.info)}
+      >
+        <Text style={styles.infoButtonText}>Game Info</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  background: {
+    flex: 1,
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  container: {
+    flexGrow: 1,
+    padding: 16,
+    paddingTop: 48,
+    paddingBottom: 95,
+  },
+  title: {
+    color: "#123C69",
+    fontSize: 34,
+    fontWeight: "900",
+    textAlign: "center",
+    marginBottom: 2,
+  },
+  subtitle: {
+    color: "#123C69",
+    fontSize: 15,
+    fontWeight: "700",
+    textAlign: "center",
+    marginBottom: 14,
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  card: {
+    width: "48%",
+    minHeight: 135,
+    backgroundColor: "rgba(255,255,255,0.9)",
+    borderRadius: 16,
+    padding: 10,
+    borderWidth: 2,
+    borderColor: "#2E7D6B",
+    justifyContent: "space-between",
+  },
+  cardPlaceholder: {
+    width: "48%",
+    minHeight: 135,
+    backgroundColor: "rgba(255,255,255,0.62)",
+    borderRadius: 16,
+    padding: 10,
+    borderWidth: 2,
+    borderColor: "rgba(46,125,107,0.45)",
+    justifyContent: "space-between",
+  },
+  cardTitle: {
+    color: "#123C69",
+    fontSize: 15,
+    fontWeight: "900",
+    textAlign: "center",
+    marginBottom: 4,
+  },
+  cardText: {
+    color: "#111111",
+    fontSize: 11,
+    lineHeight: 14,
+    fontWeight: "600",
+    textAlign: "center",
+    marginBottom: 6,
+  },
+  playButton: {
+    backgroundColor: "#2E7D6B",
+    borderRadius: 12,
+    paddingVertical: 6,
+    marginBottom: 6,
+  },
+  disabledButton: {
+    backgroundColor: "rgba(18,60,105,0.35)",
+    borderRadius: 12,
+    paddingVertical: 6,
+    marginBottom: 6,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "900",
+    textAlign: "center",
+  },
+  infoButton: {
+    backgroundColor: "rgba(18,60,105,0.9)",
+    borderRadius: 12,
+    paddingVertical: 6,
+  },
+  infoButtonText: {
+    color: "white",
+    fontSize: 11,
+    fontWeight: "900",
+    textAlign: "center",
+  },
+  noticeBox: {
+    marginTop: 16,
+    marginBottom: 16,
+    backgroundColor: "rgba(255,255,255,0.92)",
+    borderRadius: 18,
+    padding: 16,
+    borderWidth: 3,
+    borderColor: "#123C69",
+  },
+  noticeText: {
+    color: "#123C69",
+    fontSize: 17,
+    lineHeight: 22,
+    fontWeight: "900",
+    textAlign: "center",
+  },
+  scoreboardBox: {
+    marginTop: 16,
+    backgroundColor: "rgba(255,255,255,0.82)",
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: 2,
+    borderColor: "#123C69",
+  },
+  scoreboardTitle: {
+    color: "#123C69",
+    fontSize: 18,
+    fontWeight: "900",
+    textAlign: "center",
+    marginBottom: 4,
+  },
+  scoreboardText: {
+    color: "#111111",
+    fontSize: 13,
+    fontWeight: "700",
+    textAlign: "center",
   },
 });
