@@ -1,5 +1,5 @@
 
-const recoveryMessages = [
+const recoveryMessages: string[] = [
 
   "Recovery is not punishment.",
 

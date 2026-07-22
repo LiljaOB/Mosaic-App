@@ -14,7 +14,7 @@ import {
 } from "react-native";
 
 // Recovery messages
-import recoveryMessages from "../../constants/recovery/Messages";
+import recoveryMessages from "../../constants/Messages";
 
 // Counter component
 import Counter from "../../components/Counter";
