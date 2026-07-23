@@ -5,19 +5,19 @@ import { router } from "expo-router";
 
 // React Native components
 import {
-  Image,
-  ImageBackground,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
+    Image,
+    ImageBackground,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 // Recovery messages
 import recoveryMessages from "../../constants/Messages";
 
 // Counter component
-import Counter from "../../components/Counter";
+import Counter from "../../components/daysTracker/Counter";
 
 // Home page styles
 import styles from "../../styles/homeStyles";

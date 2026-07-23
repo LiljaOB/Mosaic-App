@@ -1,15 +1,15 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import {
-    ImageBackground,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function MosaicAI() {
@@ -29,7 +29,7 @@ export default function MosaicAI() {
 
   return (
     <ImageBackground
-      source={require("../assets/images/backg.png")}
+      source={require("../../assets/images/backg.png")}
       style={styles.background}
       resizeMode="cover"
     >

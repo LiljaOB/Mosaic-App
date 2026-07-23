@@ -1,5 +1,6 @@
 import { ImageBackground, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
+import { NegativeMoods, PositiveMoods } from "../constants/Moods";
 import type { Suggestion } from "../constants/Suggestions";
 import GiveMeSomethingToDoOptionButton from "./GiveMeSomethingToDoOptionButton";
 
@@ -17,19 +18,6 @@ type GiveMeSomethingToDoUIProps = {
   onAnotherSuggestion: () => void;
   onShowWhy: () => void;
 };
-
-const mainMoods = ["Solid", "Grateful", "Upbeat", "Calm", "Happy", "Bored"];
-
-const moreMoods = [
-  "Restless",
-  "Lonely",
-  "Anxious",
-  "Stressed",
-  "Struggling",
-  "Triggered",
-  "Angry",
-  "Overwhelmed",
-];
 
 const times = ["5 Minutes", "15 Minutes", "30 Minutes", "60 Minutes"];
 const challenges = ["Easy", "Moderate"];
@@ -114,7 +102,7 @@ export default function GiveMeSomethingToDoUI({
               justifyContent: "space-between",
             }}
           >
-            {mainMoods.map((mood) => (
+            {PositiveMoods.map((mood) => (
               <GiveMeSomethingToDoOptionButton
                 key={mood}
                 label={mood}
@@ -155,7 +143,7 @@ export default function GiveMeSomethingToDoUI({
                 justifyContent: "space-between",
               }}
             >
-              {moreMoods.map((mood) => (
+              {NegativeMoods.map((mood) => (
                 <GiveMeSomethingToDoOptionButton
                   key={mood}
                   label={mood}

@@ -1,4 +1,3 @@
-import { router } from "expo-router";
 import { useState } from "react";
 import {
   Alert,
@@ -166,13 +165,6 @@ export default function HoldTheLine() {
             ))}
           </View>
         </View>
-
-        <TouchableOpacity
-          style={styles.askAiButton}
-          onPress={() => router.push("/mosaic-ai")}
-        >
-          <Text style={styles.askAiButtonText}>Ask Mosaic AI</Text>
-        </TouchableOpacity>
 
         <Text style={styles.askAiDescription}>
           Find support, draft a message, or work out the next step.

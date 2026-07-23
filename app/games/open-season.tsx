@@ -257,7 +257,7 @@ export default function OpenSeason() {
         }}
       >
         <Image
-          source={require("../assets/images/bar.png")}
+          source={require("../../assets/images/bar.png")}
           style={{
             position: "absolute",
             width: OVERVIEW_WIDTH,
@@ -273,8 +273,8 @@ export default function OpenSeason() {
             key={pint.id}
             source={
               pint.hit
-                ? require("../assets/images/pint2.png")
-                : require("../assets/images/pint.png")
+                ? require("../../assets/images/pint2.png")
+                : require("../../assets/images/pint.png")
             }
             style={{
               position: "absolute",
@@ -395,7 +395,7 @@ export default function OpenSeason() {
       }}
     >
       <Image
-        source={require("../assets/images/bar.png")}
+        source={require("../../assets/images/bar.png")}
         style={{
           position: "absolute",
           width: AIM_SCENE_WIDTH,
@@ -411,8 +411,8 @@ export default function OpenSeason() {
           key={pint.id}
           source={
             pint.hit
-              ? require("../assets/images/pint2.png")
-              : require("../assets/images/pint.png")
+              ? require("../../assets/images/pint2.png")
+              : require("../../assets/images/pint.png")
           }
           style={{
             position: "absolute",
@@ -456,7 +456,7 @@ export default function OpenSeason() {
         }}
       >
         <Image
-          source={require("../assets/images/bar.png")}
+          source={require("../../assets/images/bar.png")}
           style={{
             position: "absolute",
             width: AIM_SCENE_WIDTH,
@@ -476,8 +476,8 @@ export default function OpenSeason() {
             key={pint.id}
             source={
               pint.hit
-                ? require("../assets/images/pint2.png")
-                : require("../assets/images/pint.png")
+                ? require("../../assets/images/pint2.png")
+                : require("../../assets/images/pint.png")
             }
             style={{
               position: "absolute",
