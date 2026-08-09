@@ -1,4 +1,6 @@
+import { View } from "react-native";
 import GiveMeSomethingToDoUI from "../components/GiveMeSomethingToDoUI";
+import HeaderBar from "../components/navigation/HeaderBar";
 import { useGiveMeSomethingToDo } from "../hooks/useGiveMeSomethingToDo";
 
 export default function GiveMeSomethingToDo() {
@@ -18,19 +20,23 @@ export default function GiveMeSomethingToDo() {
   } = useGiveMeSomethingToDo();
 
   return (
-    <GiveMeSomethingToDoUI
-      selectedMood={selectedMood}
-      selectedTime={selectedTime}
-      selectedChallenge={selectedChallenge}
-      showMoreMoods={showMoreMoods}
-      suggestion={suggestion}
-      onSelectMood={setSelectedMood}
-      onSelectTime={setSelectedTime}
-      onSelectChallenge={setSelectedChallenge}
-      onToggleMoreMoods={toggleMoreMoods}
-      onChallengeMe={challengeMe}
-      onAnotherSuggestion={anotherSuggestion}
-      onShowWhy={showWhy}
-    />
+    <View style={{ flex: 1 }}>
+      <HeaderBar />
+
+      <GiveMeSomethingToDoUI
+        selectedMood={selectedMood}
+        selectedTime={selectedTime}
+        selectedChallenge={selectedChallenge}
+        showMoreMoods={showMoreMoods}
+        suggestion={suggestion}
+        onSelectMood={setSelectedMood}
+        onSelectTime={setSelectedTime}
+        onSelectChallenge={setSelectedChallenge}
+        onToggleMoreMoods={toggleMoreMoods}
+        onChallengeMe={challengeMe}
+        onAnotherSuggestion={anotherSuggestion}
+        onShowWhy={showWhy}
+      />
+    </View>
   );
 }

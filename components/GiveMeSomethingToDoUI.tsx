@@ -45,7 +45,7 @@ export default function GiveMeSomethingToDoUI({
       <ScrollView
         contentContainerStyle={{
           padding: 24,
-          paddingTop: 50,
+          paddingTop: 90,
           paddingBottom: 70,
         }}
       >

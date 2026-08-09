@@ -96,7 +96,7 @@ export default function CalendarUI({
 			</Text>
 
 
-			{/* ADD RESET BUTTON HERE */}
+			{/* RESET BUTTON */}
 			{startDate !== "" && (
 				<TouchableOpacity
 					onPress={onResetDate}
