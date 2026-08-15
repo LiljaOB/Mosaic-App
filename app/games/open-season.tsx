@@ -9,6 +9,8 @@ import {
   View,
 } from "react-native";
 
+import NavOrb from "../../components/navigation/NavOrb";
+
 const screen = Dimensions.get("window");
 
 const IMAGE_RATIO = 1792 / 1024;
@@ -186,6 +188,8 @@ export default function OpenSeason() {
           padding: 24,
         }}
       >
+        <NavOrb />
+
         <Text
           style={{
             color: "white",
@@ -256,6 +260,8 @@ export default function OpenSeason() {
           overflow: "hidden",
         }}
       >
+        <NavOrb />
+
         <Image
           source={require("../../assets/images/bar.png")}
           style={{
@@ -312,7 +318,7 @@ export default function OpenSeason() {
         <View
           style={{
             position: "absolute",
-            top: 34,
+            top: 100,
             left: 22,
             backgroundColor: "rgba(0,0,0,0.62)",
             borderRadius: 16,
@@ -394,6 +400,8 @@ export default function OpenSeason() {
         overflow: "hidden",
       }}
     >
+      <NavOrb />
+
       <Image
         source={require("../../assets/images/bar.png")}
         style={{
@@ -536,7 +544,7 @@ export default function OpenSeason() {
         pointerEvents="none"
         style={{
           position: "absolute",
-          top: 34,
+          top: 100,
           left: 22,
           backgroundColor: "rgba(0,0,0,0.68)",
           borderRadius: 16,

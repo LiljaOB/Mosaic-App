@@ -12,6 +12,8 @@ import {
   View,
 } from "react-native";
 
+import NavOrb from "../../components/navigation/NavOrb";
+
 export default function MosaicAI() {
   const [message, setMessage] = useState("");
   const [reply, setReply] = useState("");
@@ -28,12 +30,15 @@ export default function MosaicAI() {
   }
 
   return (
-    <ImageBackground
-      source={require("../../assets/images/backg.png")}
-      style={styles.background}
-      resizeMode="cover"
-    >
-      <KeyboardAvoidingView
+    <View style={{ flex: 1 }}>
+      <NavOrb />
+
+      <ImageBackground
+        source={require("../../assets/images/backg.png")}
+        style={styles.background}
+        resizeMode="cover"
+      >
+        <KeyboardAvoidingView
         style={styles.wrapper}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
@@ -95,7 +100,8 @@ export default function MosaicAI() {
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
-    </ImageBackground>
+      </ImageBackground>
+    </View>
   );
 }
 
@@ -110,7 +116,7 @@ const styles = StyleSheet.create({
 
   container: {
     padding: 24,
-    paddingTop: 50,
+    paddingTop: 90,
     paddingBottom: 50,
   },
 

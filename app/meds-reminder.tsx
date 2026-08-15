@@ -1,4 +1,7 @@
+import { View } from "react-native";
+
 import MedsReminderUI from "../components/medsReminder/MedsReminderUI";
+import NavOrb from "../components/navigation/NavOrb";
 import { useMedsReminder } from "../hooks/useMedsReminder";
 
 export default function MedsReminder() {
@@ -18,19 +21,23 @@ export default function MedsReminder() {
   } = useMedsReminder();
 
   return (
-    <MedsReminderUI
-      medicineName={medicineName}
-      onChangeMedicineName={setMedicineName}
-      time={time}
-      onChangeTime={setTime}
-      remindBefore={remindBefore}
-      onChangeRemindBefore={setRemindBefore}
-      publicMessage={publicMessage}
-      onChangePublicMessage={setPublicMessage}
-      reminders={reminders}
-      previewTime={previewTime}
-      onAddReminder={addReminder}
-      onDeleteReminder={deleteReminder}
-    />
+    <View style={{ flex: 1 }}>
+      <NavOrb />
+
+      <MedsReminderUI
+        medicineName={medicineName}
+        onChangeMedicineName={setMedicineName}
+        time={time}
+        onChangeTime={setTime}
+        remindBefore={remindBefore}
+        onChangeRemindBefore={setRemindBefore}
+        publicMessage={publicMessage}
+        onChangePublicMessage={setPublicMessage}
+        reminders={reminders}
+        previewTime={previewTime}
+        onAddReminder={addReminder}
+        onDeleteReminder={deleteReminder}
+      />
+    </View>
   );
 }

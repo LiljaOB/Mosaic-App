@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import GiveMeSomethingToDoUI from "../components/GiveMeSomethingToDoUI";
-import HeaderBar from "../components/navigation/HeaderBar";
+import NavOrb from "../components/navigation/NavOrb";
 import { useGiveMeSomethingToDo } from "../hooks/useGiveMeSomethingToDo";
 
 export default function GiveMeSomethingToDo() {
@@ -21,7 +21,7 @@ export default function GiveMeSomethingToDo() {
 
   return (
     <View style={{ flex: 1 }}>
-      <HeaderBar />
+      <NavOrb />
 
       <GiveMeSomethingToDoUI
         selectedMood={selectedMood}

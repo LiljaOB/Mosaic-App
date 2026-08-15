@@ -8,6 +8,8 @@ import {
     useWindowDimensions,
 } from "react-native";
 
+import NavOrb from "../../components/navigation/NavOrb";
+
 type Player = {
   x: number;
   y: number;
@@ -145,7 +147,10 @@ export default function CravingHunter() {
   }
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <View style={{ flex: 1 }}>
+      <NavOrb />
+
+      <SafeAreaView style={styles.screen}>
       <View style={styles.header}>
         <Text style={styles.title}>The Craving Hunter</Text>
         <Text style={styles.subtitle}>Destroy cravings. Protect people. Keep moving.</Text>
@@ -241,7 +246,8 @@ export default function CravingHunter() {
           <Text style={styles.resetText}>New Craving</Text>
         </TouchableOpacity>
       )}
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
@@ -251,7 +257,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#10201d",
   },
   header: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingTop: 90,
+    paddingBottom: 16,
     alignItems: "center",
   },
   title: {

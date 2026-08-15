@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 24,
-    paddingTop: 50,
+    paddingTop: 90,
     paddingBottom: 90,
   },
   title: {
