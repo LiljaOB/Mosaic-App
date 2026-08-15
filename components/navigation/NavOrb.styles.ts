@@ -32,9 +32,9 @@ export const styles = StyleSheet.create({
     shadowRadius: 5,
   },
   menuButton: {
+    // top/left are animated inline (see radialOffset in NavOrb.tsx), based
+    // on this same centered-in-the-orb starting position.
     position: "absolute",
-    top: (ORB_SIZE - MENU_BUTTON_SIZE) / 2,
-    left: (ORB_SIZE - MENU_BUTTON_SIZE) / 2,
     width: MENU_BUTTON_SIZE,
     height: MENU_BUTTON_SIZE,
   },

@@ -8,18 +8,31 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { styles } from "./NavOrb.styles";
 
 const RADIUS = 88;
+const BASE_OFFSET = 6; // centers the 44px menu button inside the 56px orb
 // Angles measured from the positive x-axis (0 = right, 90 = up), so the
 // menu fans up and to the right, away from the bottom-left screen edge.
 const BACK_ANGLE_DEG = 20;
 const HOME_ANGLE_DEG = 80;
 
-function radialTransform(angleDeg: number, progress: Animated.Value) {
+// Native transforms (translateX/Y) only move a view visually — the touch
+// hit-box stays at the untransformed layout position, so on-device taps miss
+// the buttons even though they render in the right place. Animating the real
+// `left`/`top` layout offsets keeps the hit-box in sync on native, not just web.
+function radialOffset(angleDeg: number, progress: Animated.Value) {
   const rad = (angleDeg * Math.PI) / 180;
-  return [
-    { translateX: Animated.multiply(progress, Math.cos(rad) * RADIUS) },
-    { translateY: Animated.multiply(progress, -Math.sin(rad) * RADIUS) },
-    { scale: progress },
-  ];
+  const dx = Math.cos(rad) * RADIUS;
+  const dy = Math.sin(rad) * RADIUS;
+
+  return {
+    left: progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [BASE_OFFSET, BASE_OFFSET + dx],
+    }),
+    top: progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [BASE_OFFSET, BASE_OFFSET - dy],
+    }),
+  };
 }
 
 export default function NavOrb() {
@@ -28,9 +41,11 @@ export default function NavOrb() {
   const progress = useRef(new Animated.Value(0)).current;
 
   const animateTo = (toValue: number) => {
+    // left/top aren't supported by the native driver, so this whole
+    // animation (including opacity/rotate below) runs on the JS thread.
     Animated.spring(progress, {
       toValue,
-      useNativeDriver: true,
+      useNativeDriver: false,
       friction: 7,
       tension: 60,
     }).start();
@@ -70,7 +85,7 @@ export default function NavOrb() {
         pointerEvents="box-none"
       >
         <Animated.View
-          style={[styles.menuButton, { opacity: progress, transform: radialTransform(BACK_ANGLE_DEG, progress) }]}
+          style={[styles.menuButton, { opacity: progress }, radialOffset(BACK_ANGLE_DEG, progress)]}
           pointerEvents={open ? "auto" : "none"}
         >
           <Pressable style={styles.menuButtonInner} onPress={() => navigate(() => router.back())}>
@@ -79,7 +94,7 @@ export default function NavOrb() {
         </Animated.View>
 
         <Animated.View
-          style={[styles.menuButton, { opacity: progress, transform: radialTransform(HOME_ANGLE_DEG, progress) }]}
+          style={[styles.menuButton, { opacity: progress }, radialOffset(HOME_ANGLE_DEG, progress)]}
           pointerEvents={open ? "auto" : "none"}
         >
           <Pressable style={styles.menuButtonInner} onPress={() => navigate(() => router.push("/"))}>
