@@ -7,6 +7,7 @@ import { styles } from "./SectionDropdown.styles";
 type SectionDropdownProps = {
   title: string;
   description: string;
+  colour: string;
   section: SectionName;
   openSection: SectionName | null;
   onToggle: (section: SectionName) => void;
@@ -16,6 +17,7 @@ type SectionDropdownProps = {
 export default function SectionDropdown({
   title,
   description,
+  colour,
   section,
   openSection,
   onToggle,
@@ -26,7 +28,10 @@ export default function SectionDropdown({
   return (
     <View style={styles.sectionBox}>
       <TouchableOpacity
-        style={styles.sectionHeader}
+        style={[
+          styles.sectionHeader,
+          { backgroundColor: colour, borderColor: colour },
+        ]}
         onPress={() => onToggle(section)}
       >
         <View style={styles.sectionHeaderText}>

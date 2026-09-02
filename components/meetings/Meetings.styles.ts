@@ -24,6 +24,13 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     fontWeight: "700",
   },
+  subHeading: {
+    color: "#123C69",
+    fontSize: 16,
+    fontWeight: "800",
+    marginBottom: 4,
+    marginTop: 10,
+  },
   bottomBox: {
     backgroundColor: "rgba(255,255,255,0.86)",
     borderRadius: 22,

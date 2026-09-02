@@ -24,18 +24,18 @@ export const styles = StyleSheet.create({
     borderColor: "#177F69",
     marginTop: 12,
   },
-  socialInfoButton: {
-    backgroundColor: "#123C69",
-    borderRadius: 16,
-    paddingVertical: 13,
-    alignItems: "center",
-    marginBottom: 10,
-  },
   socialMainButton: {
     backgroundColor: "#177F69",
     borderRadius: 16,
     paddingVertical: 13,
     alignItems: "center",
+  },
+  socialInfoButton: {
+    backgroundColor: "#123C69",
+    borderRadius: 16,
+    paddingVertical: 13,
+    alignItems: "center",
+    marginTop: 10,
   },
   socialButtonText: {
     color: "#ffffff",

@@ -4,8 +4,6 @@ export const styles = StyleSheet.create({
   sectionBox: {
     backgroundColor: "rgba(255,255,255,0.9)",
     borderRadius: 22,
-    borderWidth: 2,
-    borderColor: "rgba(18,60,105,0.35)",
     marginBottom: 14,
     overflow: "hidden",
   },
@@ -14,24 +12,25 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: "row",
     alignItems: "center",
+    borderWidth: 2,
   },
   sectionHeaderText: {
     flex: 1,
   },
   sectionTitle: {
-    color: "#123C69",
+    color: "#ffffff",
     fontSize: 20,
     fontWeight: "900",
     marginBottom: 4,
   },
   sectionDescription: {
-    color: "#263238",
+    color: "#ffffff",
     fontSize: 13,
     lineHeight: 18,
     fontWeight: "600",
   },
   arrow: {
-    color: "#123C69",
+    color: "#ffffff",
     fontSize: 22,
     fontWeight: "900",
     marginLeft: 12,

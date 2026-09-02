@@ -1,47 +1,82 @@
 import { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Linking } from "react-native";
 
-import suggestions, { type Suggestion } from "../constants/Suggestions";
+import suggestions, {
+  type Difficulty,
+  type Suggestion,
+} from "../constants/Suggestions";
+
+function getRandomSuggestion(difficulty: Difficulty): Suggestion | null {
+  const list = suggestions.filter((item) => item.difficulty === difficulty);
+
+  if (list.length === 0) {
+    return null;
+  }
+
+  return list[Math.floor(Math.random() * list.length)];
+}
 
 export function useGiveMeSomethingToDo() {
-  const [selectedMood, setSelectedMood] = useState("Solid");
-  const [selectedTime, setSelectedTime] = useState("5 Minutes");
-  const [selectedChallenge, setSelectedChallenge] = useState("Easy");
-  const [showMoreMoods, setShowMoreMoods] = useState(false);
-  const [suggestion, setSuggestion] = useState<Suggestion>(suggestions[0]);
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useState<Difficulty | null>(null);
+  const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
+  const [showOtherOptions, setShowOtherOptions] = useState(false);
 
-  function challengeMe() {
-    const moodMatch = suggestions.find((item) => item.mood === selectedMood);
-    setSuggestion(moodMatch || suggestions[0]);
+  function selectDifficulty(difficulty: Difficulty) {
+    setSelectedDifficulty(difficulty);
+    setSuggestion(getRandomSuggestion(difficulty));
   }
 
   function anotherSuggestion() {
-    const currentIndex = suggestions.findIndex(
-      (item) => item.idea === suggestion.idea
+    if (!selectedDifficulty) {
+      return;
+    }
+
+    const list = suggestions.filter(
+      (item) => item.difficulty === selectedDifficulty
     );
 
-    const nextIndex =
-      currentIndex === suggestions.length - 1 ? 0 : currentIndex + 1;
+    if (list.length === 0) {
+      return;
+    }
 
-    setSuggestion(suggestions[nextIndex]);
+    let next = getRandomSuggestion(selectedDifficulty);
+
+    if (suggestion && list.length > 1) {
+      while (next && next.idea === suggestion.idea) {
+        next = getRandomSuggestion(selectedDifficulty);
+      }
+    }
+
+    setSuggestion(next);
   }
 
   function showWhy() {
+    if (!suggestion) {
+      return;
+    }
+
     Alert.alert("Why This?", suggestion.why);
   }
 
+  function toggleOtherOptions() {
+    setShowOtherOptions((current) => !current);
+  }
+
+  function openOtherOption(url: string) {
+    Linking.openURL(url).catch(() => {
+      Alert.alert("Could not open link", "Please try again.");
+    });
+  }
+
   return {
-    selectedMood,
-    selectedTime,
-    selectedChallenge,
-    showMoreMoods,
+    selectedDifficulty,
     suggestion,
-    setSelectedMood,
-    setSelectedTime,
-    setSelectedChallenge,
-    toggleMoreMoods: () => setShowMoreMoods((current) => !current),
-    challengeMe,
+    showOtherOptions,
+    selectDifficulty,
     anotherSuggestion,
     showWhy,
+    toggleOtherOptions,
+    openOtherOption,
   };
 }

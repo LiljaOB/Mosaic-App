@@ -5,18 +5,14 @@ import { useGiveMeSomethingToDo } from "../hooks/useGiveMeSomethingToDo";
 
 export default function GiveMeSomethingToDo() {
   const {
-    selectedMood,
-    selectedTime,
-    selectedChallenge,
-    showMoreMoods,
+    selectedDifficulty,
     suggestion,
-    setSelectedMood,
-    setSelectedTime,
-    setSelectedChallenge,
-    toggleMoreMoods,
-    challengeMe,
+    showOtherOptions,
+    selectDifficulty,
     anotherSuggestion,
     showWhy,
+    toggleOtherOptions,
+    openOtherOption,
   } = useGiveMeSomethingToDo();
 
   return (
@@ -24,18 +20,14 @@ export default function GiveMeSomethingToDo() {
       <NavOrb />
 
       <GiveMeSomethingToDoUI
-        selectedMood={selectedMood}
-        selectedTime={selectedTime}
-        selectedChallenge={selectedChallenge}
-        showMoreMoods={showMoreMoods}
+        selectedDifficulty={selectedDifficulty}
         suggestion={suggestion}
-        onSelectMood={setSelectedMood}
-        onSelectTime={setSelectedTime}
-        onSelectChallenge={setSelectedChallenge}
-        onToggleMoreMoods={toggleMoreMoods}
-        onChallengeMe={challengeMe}
+        showOtherOptions={showOtherOptions}
+        onSelectDifficulty={selectDifficulty}
         onAnotherSuggestion={anotherSuggestion}
         onShowWhy={showWhy}
+        onToggleOtherOptions={toggleOtherOptions}
+        onOpenOtherOption={openOtherOption}
       />
     </View>
   );

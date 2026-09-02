@@ -5,13 +5,7 @@ import NavOrb from "../components/navigation/NavOrb";
 import { useMeetings } from "../hooks/useMeetings";
 
 export default function Meetings() {
-  const {
-    openSection,
-    toggleSection,
-    openLink,
-    showMeetingInfo,
-    showSocialPrescribingInfo,
-  } = useMeetings();
+  const { openSection, toggleSection, openLink } = useMeetings();
 
   return (
     <View style={{ flex: 1 }}>
@@ -21,8 +15,6 @@ export default function Meetings() {
         openSection={openSection}
         onToggleSection={toggleSection}
         onOpenLink={openLink}
-        onShowMeetingInfo={showMeetingInfo}
-        onShowSocialPrescribingInfo={showSocialPrescribingInfo}
       />
     </View>
   );

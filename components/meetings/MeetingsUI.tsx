@@ -1,10 +1,19 @@
 import { ImageBackground, ScrollView, Text, View } from "react-native";
 
 import {
-  languageMeetingLinks,
-  localMeetingLinks,
-  onlineMeetingLinks,
-  specialistMeetingLinks,
+  alcoholLanguageLinks,
+  alcoholLocalLinks,
+  alcoholMenLinks,
+  alcoholOnlineLinks,
+  alcoholSpecialLinks,
+  alcoholWomenLinks,
+  cannabisLinks,
+  cocaineLinks,
+  gamblingLinks,
+  heroinLinks,
+  MOSAIC_SUPPORT_URL,
+  SECTION_COLOURS,
+  sexLoveLinks,
   SOCIAL_PRESCRIBING_URL,
   type SectionName,
 } from "./constants/meetings";
@@ -17,16 +26,12 @@ type MeetingsUIProps = {
   openSection: SectionName | null;
   onToggleSection: (section: SectionName) => void;
   onOpenLink: (url: string) => void;
-  onShowMeetingInfo: (name: string) => void;
-  onShowSocialPrescribingInfo: () => void;
 };
 
 export default function MeetingsUI({
   openSection,
   onToggleSection,
   onOpenLink,
-  onShowMeetingInfo,
-  onShowSocialPrescribingInfo,
 }: MeetingsUIProps) {
   return (
     <ImageBackground
@@ -35,92 +40,127 @@ export default function MeetingsUI({
       resizeMode="cover"
     >
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Find Support</Text>
+        <Text style={styles.title}>Find a Meeting</Text>
 
         <Text style={styles.subtitle}>
-          Meetings, online support, community links, and wellbeing options.
+          Ireland meetings plus online options worldwide.
         </Text>
 
         <SectionDropdown
-          title="Find Your Local Meeting"
-          description="AA, NA, LifeRing, and SMART Recovery meeting finders."
-          section="local"
+          title="Alcohol"
+          description="AA, LifeRing, and SMART Recovery meetings, plus women's, men's, LGBTQ+ and language-specific options."
+          colour={SECTION_COLOURS.alcohol}
+          section="alcohol"
           openSection={openSection}
           onToggle={onToggleSection}
         >
-          {localMeetingLinks.map((item) => (
-            <LinkCard
-              key={item.name}
-              item={item}
-              onOpenLink={onOpenLink}
-              onShowInfo={onShowMeetingInfo}
-            />
+          <Text style={styles.subHeading}>Local / Ireland</Text>
+          {alcoholLocalLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
+          ))}
+
+          <Text style={styles.subHeading}>Online</Text>
+          {alcoholOnlineLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
+          ))}
+
+          <Text style={styles.subHeading}>Women only</Text>
+          {alcoholWomenLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
+          ))}
+
+          <Text style={styles.subHeading}>Men only</Text>
+          {alcoholMenLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
+          ))}
+
+          <Text style={styles.subHeading}>LGBTQ+ & Young People</Text>
+          {alcoholSpecialLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
+          ))}
+
+          <Text style={styles.subHeading}>Languages</Text>
+          {alcoholLanguageLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
           ))}
         </SectionDropdown>
 
         <SectionDropdown
-          title="Live Online Meetings"
-          description="Online meetings you can read about before joining."
-          section="online"
+          title="Gambling"
+          description="Gamblers Anonymous meetings, in person and online."
+          colour={SECTION_COLOURS.gambling}
+          section="gambling"
           openSection={openSection}
           onToggle={onToggleSection}
         >
-          {onlineMeetingLinks.map((item) => (
-            <LinkCard
-              key={item.name}
-              item={item}
-              onOpenLink={onOpenLink}
-              onShowInfo={onShowMeetingInfo}
-            />
+          {gamblingLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
           ))}
         </SectionDropdown>
 
         <SectionDropdown
-          title="Special Interest Meetings"
-          description="Meetings such as LGBTQ+, women’s, men’s, and young people’s meetings."
-          section="special"
+          title="Cannabis"
+          description="Narcotics Anonymous and SMART Recovery meeting finders."
+          colour={SECTION_COLOURS.cannabis}
+          section="cannabis"
           openSection={openSection}
           onToggle={onToggleSection}
         >
-          {specialistMeetingLinks.map((item) => (
-            <LinkCard
-              key={item.name}
-              item={item}
-              onOpenLink={onOpenLink}
-              onShowInfo={onShowMeetingInfo}
-            />
+          {cannabisLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
           ))}
         </SectionDropdown>
 
         <SectionDropdown
-          title="Meetings in Other Languages"
-          description="International directories and language-specific meeting links."
-          section="languages"
+          title="Cocaine"
+          description="Cocaine Anonymous and Narcotics Anonymous meeting finders."
+          colour={SECTION_COLOURS.cocaine}
+          section="cocaine"
           openSection={openSection}
           onToggle={onToggleSection}
         >
-          {languageMeetingLinks.map((item) => (
-            <LinkCard
-              key={item.name}
-              item={item}
-              onOpenLink={onOpenLink}
-              onShowInfo={onShowMeetingInfo}
-            />
+          {cocaineLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
           ))}
         </SectionDropdown>
 
         <SectionDropdown
-          title="Wellbeing & Community Support"
+          title="Heroin & Other Drugs"
+          description="Narcotics Anonymous meetings, in person and online."
+          colour={SECTION_COLOURS.heroin}
+          section="heroin"
+          openSection={openSection}
+          onToggle={onToggleSection}
+        >
+          {heroinLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
+          ))}
+        </SectionDropdown>
+
+        <SectionDropdown
+          title="Sex & Love Addiction"
+          description="SLAA and SA meetings, in person and online."
+          colour={SECTION_COLOURS.sexlove}
+          section="sexlove"
+          openSection={openSection}
+          onToggle={onToggleSection}
+        >
+          {sexLoveLinks.map((item) => (
+            <LinkCard key={item.name} item={item} onOpenLink={onOpenLink} />
+          ))}
+        </SectionDropdown>
+
+        <SectionDropdown
+          title="Wellbeing & Community"
           description="Non-meeting supports that may help with connection, routine, and wellbeing."
+          colour={SECTION_COLOURS.wellbeing}
           section="wellbeing"
           openSection={openSection}
           onToggle={onToggleSection}
         >
           <WellbeingCard
-            onShowSocialPrescribingInfo={onShowSocialPrescribingInfo}
-            onOpenSocialPrescribingLink={() =>
-              onOpenLink(SOCIAL_PRESCRIBING_URL)
-            }
+            onOpenSocialPrescribingLink={() => onOpenLink(SOCIAL_PRESCRIBING_URL)}
+            onOpenMosaicSupportLink={() => onOpenLink(MOSAIC_SUPPORT_URL)}
           />
         </SectionDropdown>
 
@@ -128,8 +168,9 @@ export default function MeetingsUI({
           <Text style={styles.bottomTitle}>Why more than one option?</Text>
 
           <Text style={styles.bottomText}>
-            Recovery is not one-size-fits-all. Mosaic links to different
-            support options so people can choose what suits them best.
+            Different people need different rooms. AA, LifeRing, SMART, NA, CA
+            and others each have their own approach. Online meetings mean you
+            can also join specialist rooms worldwide. Use what helps you.
           </Text>
         </View>
       </ScrollView>

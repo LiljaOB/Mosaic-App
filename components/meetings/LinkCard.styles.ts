@@ -23,32 +23,13 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 12,
   },
-  buttonRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
   mainButton: {
-    width: "60%",
     borderRadius: 16,
     paddingVertical: 12,
     alignItems: "center",
   },
   mainButtonText: {
     color: "#ffffff",
-    fontSize: 14,
-    fontWeight: "900",
-    textAlign: "center",
-  },
-  infoButton: {
-    width: "36%",
-    backgroundColor: "#ffffff",
-    borderWidth: 2,
-    borderRadius: 16,
-    paddingVertical: 12,
-    alignItems: "center",
-  },
-  infoButtonText: {
-    color: "#123C69",
     fontSize: 14,
     fontWeight: "900",
     textAlign: "center",
