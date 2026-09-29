@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import {
   Alert,
   ImageBackground,
@@ -10,66 +11,56 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-const WEBSITE_BASE_URL = "https://www.openrecoveryireland.com/pages";
+import { MosaicPageKey, MosaicSupportPage } from "../../components/MosaicSupportPage";
+import {
+  loadSupportContacts,
+  SUPPORT_CONTACT_LABELS,
+  SupportContacts,
+} from "../../constants/recovery/supportContacts";
 
 function callNumber(number: string) {
   Linking.openURL(`tel:${number}`);
 }
 
-function openWebsitePage(page: string) {
-  Linking.openURL(`${WEBSITE_BASE_URL}/${page}`).catch(() => {
-    Alert.alert(
-      "Could not open page",
-      "Please check your internet connection and try again."
-    );
-  });
-}
-
-function openSupportStepPage(label: string) {
-  Alert.alert(
-    label,
-    "This button is ready. Later it can open a matching support step page on the Mosaic website."
-  );
+function textNumber(number: string) {
+  Linking.openURL(`sms:${number}`);
 }
 
 function contactNotSet(label: string) {
-  Alert.alert(label, "This contact can be added later in settings.");
+  Alert.alert(label, "Add a phone number for this contact in Settings.", [
+    { text: "Cancel", style: "cancel" },
+    { text: "Open Settings", onPress: () => router.push("/settings") },
+  ]);
 }
-
-const supportContacts = [
-  "Sponsor",
-  "Trusted Person",
-  "Family",
-  "Partner",
-  "Doctor",
-  "Counsellor",
-];
 
 const supportSections = [
   {
+    label: "I Just Stopped — What Now?",
+    page: "just-stopped" as MosaicPageKey,
+  },
+  {
     label: "Recovery Support",
-    page: "app-recovery-support.html",
+    page: "recovery-support" as MosaicPageKey,
   },
   {
     label: "Relapse Prevention",
-    page: "app-relapse-prevention.html",
+    page: "relapse-prevention" as MosaicPageKey,
   },
   {
     label: "Mental Health Support",
-    page: "app-mental-health-support.html",
+    page: "mental-health" as MosaicPageKey,
   },
   {
     label: "Practical Help",
-    page: "app-practical-help.html",
+    page: "practical-help" as MosaicPageKey,
   },
   {
     label: "Support Network",
-    page: "app-support-network.html",
+    page: "support-network" as MosaicPageKey,
   },
   {
     label: "Safety Plan",
-    page: "app-safety-plan.html",
+    page: "safety-plan" as MosaicPageKey,
   },
 ];
 
@@ -108,6 +99,60 @@ const tenMinuteSteps = [
 
 export default function HoldTheLine() {
   const [showSupportSteps, setShowSupportSteps] = useState(false);
+  const [showContacts, setShowContacts] = useState(false);
+  const [showSections, setShowSections] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<string | null>(null);
+  const [selectedPage, setSelectedPage] = useState<MosaicPageKey | null>(null);
+  const [contacts, setContacts] = useState<SupportContacts>({
+    Sponsor: "",
+    "Trusted Person": "",
+    Partner: "",
+    Counsellor: "",
+    Doctor: "",
+    Family: "",
+  });
+
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+
+      loadSupportContacts().then((savedContacts) => {
+        if (isActive) {
+          setContacts(savedContacts);
+        }
+      });
+
+      return () => {
+        isActive = false;
+      };
+    }, []),
+  );
+
+  function handleContactPress(label: string) {
+    setSelectedContact(label);
+  }
+
+  function handleCall(label: string) {
+    setSelectedContact(null);
+    const phoneNumber = contacts[label as keyof SupportContacts];
+
+    if (phoneNumber) {
+      callNumber(phoneNumber);
+    } else {
+      contactNotSet(`Call ${label}`);
+    }
+  }
+
+  function handleText(label: string) {
+    setSelectedContact(null);
+    const phoneNumber = contacts[label as keyof SupportContacts];
+
+    if (phoneNumber) {
+      textNumber(phoneNumber);
+    } else {
+      contactNotSet(`Text ${label}`);
+    }
+  }
 
   return (
     <ImageBackground
@@ -122,6 +167,7 @@ export default function HoldTheLine() {
           Fast support when you need to steady yourself.
         </Text>
 
+        {/* Emergency Help */}
         <View style={[styles.card, styles.emergencyCard]}>
           <Text style={styles.emergencyTitle}>Emergency Help</Text>
 
@@ -146,49 +192,103 @@ export default function HoldTheLine() {
           </View>
         </View>
 
+        {/* My Support Contacts - dropdown */}
         <View style={[styles.card, styles.contactsCard]}>
-          <Text style={styles.sectionTitle}>My Support Contacts</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setShowContacts((current) => !current);
+              setSelectedContact(null);
+            }}
+            style={styles.dropdownHeader}
+          >
+            <Text style={styles.sectionTitle}>My Support Contacts</Text>
+            <Text style={styles.dropdownArrow}>
+              {showContacts ? "▲" : "▼"}
+            </Text>
+          </TouchableOpacity>
 
-          <Text style={styles.cardDescription}>
-            Quick access to people you trust.
-          </Text>
-
-          <View style={styles.wrapRow}>
-            {supportContacts.map((label) => (
+          {showContacts && (
+            <>
               <TouchableOpacity
-                key={label}
-                onPress={() => contactNotSet(label)}
-                style={[styles.contactButton, styles.raisedSmallButton]}
+                onPress={() => router.push("/settings")}
+                style={styles.settingsButton}
               >
-                <Text style={styles.contactButtonText}>Call {label}</Text>
+                <Text style={styles.settingsButtonText}>Manage Phone Numbers</Text>
               </TouchableOpacity>
-            ))}
-          </View>
+
+              <Text style={styles.cardDescription}>
+                Choose someone, then Call or Text.
+              </Text>
+
+              {SUPPORT_CONTACT_LABELS.map((label) => (
+                <View key={label}>
+                  <TouchableOpacity
+                    onPress={() => handleContactPress(label)}
+                    style={[styles.contactButton, styles.raisedSmallButton]}
+                  >
+                    <Text style={styles.contactButtonText}>
+                      {label}
+                    </Text>
+                    <Text style={styles.contactNumberText}>
+                      {contacts[label] || "Phone number not set"}
+                    </Text>
+                  </TouchableOpacity>
+
+                  {selectedContact === label && (
+                    <View style={styles.callTextRow}>
+                      <TouchableOpacity
+                        onPress={() => handleCall(label)}
+                        style={[styles.callTextButton, styles.callButton]}
+                      >
+                        <Text style={styles.callTextButtonLabel}>Call</Text>
+                      </TouchableOpacity>
+
+                      <TouchableOpacity
+                        onPress={() => handleText(label)}
+                        style={[styles.callTextButton, styles.textButton]}
+                      >
+                        <Text style={styles.callTextButtonLabel}>Text</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              ))}
+            </>
+          )}
         </View>
 
-        <Text style={styles.askAiDescription}>
-          Find support, draft a message, or work out the next step.
-        </Text>
-
+        {/* Support Sections - dropdown */}
         <View style={[styles.card, styles.supportCard]}>
-          <Text style={styles.sectionTitle}>Support Sections</Text>
+          <TouchableOpacity
+            onPress={() => setShowSections((current) => !current)}
+            style={styles.dropdownHeader}
+          >
+            <Text style={styles.sectionTitle}>Support Sections</Text>
+            <Text style={styles.dropdownArrow}>
+              {showSections ? "▲" : "▼"}
+            </Text>
+          </TouchableOpacity>
 
-          <Text style={styles.cardDescription}>
-            Short support inside the app first. Fuller information and source
-            links are available on the website.
-          </Text>
+          {showSections && (
+            <>
+              <Text style={styles.cardDescription}>
+                Read the full support guidance inside the app.
+              </Text>
 
-          {supportSections.map((section) => (
-            <TouchableOpacity
-              key={section.label}
-              onPress={() => openWebsitePage(section.page)}
-              style={[styles.supportButton, styles.raisedSmallButton]}
-            >
-              <Text style={styles.supportButtonText}>{section.label}</Text>
-            </TouchableOpacity>
-          ))}
+              {supportSections.map((section) => (
+                <TouchableOpacity
+                  key={section.label}
+                  onPress={() => setSelectedPage(section.page)}
+                  style={[styles.supportButton, styles.raisedSmallButton]}
+                >
+                  <Text style={styles.supportButtonText}>{section.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </>
+          )}
         </View>
 
+        {/* Get Through the Next 10 Minutes */}
         <View style={[styles.card, styles.tenMinutesCard]}>
           <Text style={styles.sectionTitle}>Get Through the Next 10 Minutes</Text>
 
@@ -219,9 +319,7 @@ export default function HoldTheLine() {
               <Text style={styles.modalTitle}>Support Steps</Text>
 
               <Text style={styles.modalSubtitle}>
-                Six simple suggestions for the next ten minutes. Each page
-                button will later open the Mosaic website explanation and source
-                links.
+                Six simple suggestions for the next ten minutes.
               </Text>
 
               {tenMinuteSteps.map((step, index) => (
@@ -238,7 +336,7 @@ export default function HoldTheLine() {
                   </View>
 
                   <TouchableOpacity
-                    onPress={() => openSupportStepPage(step.page)}
+                    onPress={() => setSelectedPage("recovery-support")}
                     style={[styles.stepLinkButton, styles.raisedSmallButton]}
                   >
                     <Text style={styles.stepLinkButtonText}>Open Page</Text>
@@ -256,6 +354,8 @@ export default function HoldTheLine() {
           </View>
         </View>
       </Modal>
+
+      <MosaicSupportPage page={selectedPage} onClose={() => setSelectedPage(null)} />
     </ImageBackground>
   );
 }
@@ -333,7 +433,20 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "900",
     textAlign: "center",
+    marginBottom: 0,
+  },
+
+  dropdownHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 10,
+  },
+
+  dropdownArrow: {
+    color: "#123C69",
+    fontSize: 18,
+    fontWeight: "900",
   },
 
   cardDescription: {
@@ -345,14 +458,22 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  settingsButton: {
+    backgroundColor: "#2E7D6B",
+    borderRadius: 16,
+    paddingVertical: 11,
+    alignItems: "center",
+    marginBottom: 14,
   },
 
-  wrapRow: {
+  settingsButtonText: {
+    color: "#ffffff",
+    fontSize: 15,
+    fontWeight: "900",
+  },
+
+  row: {
     flexDirection: "row",
-    flexWrap: "wrap",
     justifyContent: "space-between",
   },
 
@@ -406,7 +527,7 @@ const styles = StyleSheet.create({
   },
 
   contactButton: {
-    width: "48%",
+    width: "100%",
     backgroundColor: "#ffffff",
     borderWidth: 2,
     borderColor: "#2E7D6B",
@@ -414,42 +535,51 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 8,
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: 10,
     borderBottomWidth: 4,
     borderBottomColor: "#B7D8CF",
   },
 
   contactButtonText: {
     color: "#2E7D6B",
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "900",
     textAlign: "center",
   },
 
-  askAiButton: {
-    width: "100%",
-    backgroundColor: "#123C69",
-    paddingVertical: 15,
-    borderRadius: 20,
-    alignItems: "center",
-    marginTop: 18,
-    borderWidth: 2,
-    borderColor: "#123C69",
-  },
-
-  askAiButtonText: {
-    color: "#ffffff",
-    fontSize: 18,
-    fontWeight: "900",
-  },
-
-  askAiDescription: {
-    color: "#111111",
-    fontSize: 15,
-    lineHeight: 22,
+  contactNumberText: {
+    color: "#52656A",
+    fontSize: 14,
+    fontWeight: "700",
+    marginTop: 3,
     textAlign: "center",
-    marginTop: 8,
+  },
+
+  callTextRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 12,
+  },
+
+  callTextButton: {
+    width: "48%",
+    borderRadius: 16,
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+
+  callButton: {
+    backgroundColor: "#2E7D6B",
+  },
+
+  textButton: {
+    backgroundColor: "#123C69",
+  },
+
+  callTextButtonLabel: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "900",
   },
 
   supportButton: {

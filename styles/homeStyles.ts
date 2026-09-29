@@ -162,6 +162,106 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
+    noteDropdownContent: {
+    width: "100%",
+    backgroundColor: "rgba(255,255,255,0.78)",
+    borderRadius: 16,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: "rgba(18,60,105,0.2)",
+    marginBottom: 20,
+  },
+
+  noteDropdownText: {
+    color: "#111111",
+    fontSize: 15,
+    lineHeight: 24,
+    textAlign: "center",
+  },
+  // === GAMES PAGE ===
+gamesBackground: {
+  flex: 1,
+},
+gamesContainer: {
+  flexGrow: 1,
+  paddingHorizontal: 20,
+  paddingTop: 48,
+  paddingBottom: 100,
+  alignItems: "center",
+},
+gamesTitle: {
+  color: "#123C69",
+  fontSize: 34,
+  fontWeight: "900",
+  textAlign: "center",
+  marginBottom: 4,
+},
+gamesSubtitle: {
+  color: "#123C69",
+  fontSize: 15,
+  fontWeight: "700",
+  textAlign: "center",
+  marginBottom: 28,
+},
+gamesGrid: {
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "space-between",
+  width: "100%",
+  gap: 16,
+},
+gameIconCard: {
+  width: "47%",
+  aspectRatio: 1,
+  backgroundColor: "rgba(255,255,255,0.92)",
+  borderRadius: 20,
+  borderWidth: 2,
+  borderColor: "#2E7D6B",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: 12,
+},
+gameIconCardDisabled: {
+  width: "47%",
+  aspectRatio: 1,
+  backgroundColor: "rgba(255,255,255,0.55)",
+  borderRadius: 20,
+  borderWidth: 2,
+  borderColor: "rgba(46,125,107,0.35)",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: 12,
+},
+gameIconTitle: {
+  color: "#123C69",
+  fontSize: 14,
+  fontWeight: "800",
+  textAlign: "center",
+  marginTop: 10,
+},
+gameIconTitleDisabled: {
+  color: "rgba(18,60,105,0.55)",
+  fontSize: 14,
+  fontWeight: "700",
+  textAlign: "center",
+  marginTop: 10,
+},
+gamesNotice: {
+  marginTop: 28,
+  paddingHorizontal: 16,
+},
+gamesNoticeText: {
+  color: "#123C69",
+  fontSize: 13,
+  fontWeight: "600",
+  textAlign: "center",
+  opacity: 0.8,
+},
+
 });
 
+
+
 export default styles;
+

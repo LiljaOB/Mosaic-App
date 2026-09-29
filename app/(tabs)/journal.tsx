@@ -86,6 +86,7 @@ export default function Journal() {
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [selectedMood, setSelectedMood] = useState("");
   const [showMoreFeelings, setShowMoreFeelings] = useState(false);
+  const [showOlderEntries, setShowOlderEntries] = useState(false);
 
   useEffect(() => {
     loadEntries();
@@ -166,6 +167,77 @@ export default function Journal() {
       </TouchableOpacity>
     );
   }
+
+  function renderEntry(item: JournalEntry) {
+    return (
+      <View
+        key={item.id}
+        style={{
+          backgroundColor: "rgba(255,255,255,0.9)",
+          borderRadius: 22,
+          padding: 18,
+          borderWidth: 1,
+          borderColor: "rgba(18,60,105,0.25)",
+          marginBottom: 14,
+          elevation: 4,
+          shadowColor: "#000000",
+          shadowOffset: {
+            width: 0,
+            height: 3,
+          },
+          shadowOpacity: 0.1,
+          shadowRadius: 5,
+        }}
+      >
+        <Text
+          style={{
+            color: "#263238",
+            fontSize: 14,
+            fontWeight: "700",
+            marginBottom: 10,
+          }}
+        >
+          {item.date}
+        </Text>
+
+        {item.mood !== "" && (
+          <View
+            style={{
+              alignSelf: "flex-start",
+              backgroundColor: "#F2994A",
+              borderRadius: 16,
+              paddingVertical: 6,
+              paddingHorizontal: 14,
+              marginBottom: 12,
+            }}
+          >
+            <Text
+              style={{
+                color: "#ffffff",
+                fontSize: 14,
+                fontWeight: "900",
+              }}
+            >
+              {item.mood}
+            </Text>
+          </View>
+        )}
+
+        <Text
+          style={{
+            color: "#111111",
+            fontSize: 17,
+            lineHeight: 26,
+          }}
+        >
+          {item.text}
+        </Text>
+      </View>
+    );
+  }
+
+  const latestEntries = entries.slice(0, 5);
+  const olderEntries = entries.slice(5);
 
   return (
     <ImageBackground
@@ -413,71 +485,40 @@ export default function Journal() {
           Saved Entries
         </Text>
 
-        {entries.map((item) => (
-          <View
-            key={item.id}
-            style={{
-              backgroundColor: "rgba(255,255,255,0.9)",
-              borderRadius: 22,
-              padding: 18,
-              borderWidth: 1,
-              borderColor: "rgba(18,60,105,0.25)",
-              marginBottom: 14,
-              elevation: 4,
-              shadowColor: "#000000",
-              shadowOffset: {
-                width: 0,
-                height: 3,
-              },
-              shadowOpacity: 0.1,
-              shadowRadius: 5,
-            }}
-          >
-            <Text
+        {/* Latest 5 always visible */}
+        {latestEntries.map((item) => renderEntry(item))}
+
+        {/* Older entries in a dropdown */}
+        {olderEntries.length > 0 && (
+          <View style={{ marginTop: 6, marginBottom: 20 }}>
+            <TouchableOpacity
+              onPress={() => setShowOlderEntries((current) => !current)}
               style={{
-                color: "#263238",
-                fontSize: 14,
-                fontWeight: "700",
-                marginBottom: 10,
+                backgroundColor: "#123C69",
+                borderRadius: 18,
+                paddingVertical: 13,
+                alignItems: "center",
+                marginBottom: showOlderEntries ? 14 : 0,
+                elevation: 4,
               }}
             >
-              {item.date}
-            </Text>
-
-            {item.mood !== "" && (
-              <View
+              <Text
                 style={{
-                  alignSelf: "flex-start",
-                  backgroundColor: "#F2994A",
-                  borderRadius: 16,
-                  paddingVertical: 6,
-                  paddingHorizontal: 14,
-                  marginBottom: 12,
+                  color: "#ffffff",
+                  fontSize: 16,
+                  fontWeight: "900",
                 }}
               >
-                <Text
-                  style={{
-                    color: "#ffffff",
-                    fontSize: 14,
-                    fontWeight: "900",
-                  }}
-                >
-                  {item.mood}
-                </Text>
-              </View>
-            )}
+                {showOlderEntries
+                  ? `Hide Older Entries ▲`
+                  : `Older Entries (${olderEntries.length}) ▼`}
+              </Text>
+            </TouchableOpacity>
 
-            <Text
-              style={{
-                color: "#111111",
-                fontSize: 17,
-                lineHeight: 26,
-              }}
-            >
-              {item.text}
-            </Text>
+            {showOlderEntries &&
+              olderEntries.map((item) => renderEntry(item))}
           </View>
-        ))}
+        )}
       </ScrollView>
     </ImageBackground>
   );
