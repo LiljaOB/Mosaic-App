@@ -19,13 +19,6 @@ export default function GamesScreen() {
     >
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Games</Text>
-        <Text style={styles.subtitle}>Choose a game</Text>
-
-        <View style={styles.grid}>
-          {games.slice(0, 4).map((game) => (
-            <GameCard key={game.title} game={game} />
-          ))}
-        </View>
 
         <View style={styles.noticeBox}>
           <Text style={styles.noticeText}>
@@ -34,7 +27,7 @@ export default function GamesScreen() {
         </View>
 
         <View style={styles.grid}>
-          {games.slice(4).map((game) => (
+          {games.map((game) => (
             <GameCard key={game.title} game={game} />
           ))}
         </View>
@@ -63,26 +56,40 @@ function GameCard({
 
   return (
     <View style={active ? styles.card : styles.cardPlaceholder}>
-      <Text style={styles.cardTitle}>{game.title}</Text>
-      <Text style={styles.cardText}>{game.text}</Text>
+      <Text style={active ? styles.cardTitle : styles.cardTitleDisabled}>
+        {game.title}
+      </Text>
+      <Text style={active ? styles.cardText : styles.cardTextDisabled}>
+        {game.text}
+      </Text>
+
+      {active ? (
+        <TouchableOpacity
+          style={styles.playButton}
+          onPress={() => {
+            if (game.route) {
+              router.push(game.route as any);
+            }
+          }}
+        >
+          <Text style={styles.buttonText}>Play</Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.comingSoonBadge}>
+          <Text style={styles.comingSoonText}>COMING SOON</Text>
+        </View>
+      )}
 
       <TouchableOpacity
-        style={active ? styles.playButton : styles.disabledButton}
+        style={active ? styles.infoButton : styles.infoButtonDisabled}
         disabled={!active}
-        onPress={() => {
-          if (game.route) {
-            router.push(game.route as any);
-          }
-        }}
-      >
-        <Text style={styles.buttonText}>{active ? "Play" : "Soon"}</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.infoButton}
+        accessibilityRole="button"
+        accessibilityState={{ disabled: !active }}
         onPress={() => Alert.alert(game.title, game.info)}
       >
-        <Text style={styles.infoButtonText}>Game Info</Text>
+        <Text style={active ? styles.infoButtonText : styles.infoButtonTextDisabled}>
+          Game Info
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -105,13 +112,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 2,
   },
-  subtitle: {
-    color: "#123C69",
-    fontSize: 15,
-    fontWeight: "700",
-    textAlign: "center",
-    marginBottom: 14,
-  },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -131,11 +131,11 @@ const styles = StyleSheet.create({
   cardPlaceholder: {
     width: "48%",
     minHeight: 135,
-    backgroundColor: "rgba(255,255,255,0.62)",
+    backgroundColor: "rgba(235,235,235,0.95)",
     borderRadius: 16,
     padding: 10,
-    borderWidth: 2,
-    borderColor: "rgba(46,125,107,0.45)",
+    borderWidth: 1,
+    borderColor: "#BDBDBD",
     justifyContent: "space-between",
   },
   cardTitle: {
@@ -153,17 +153,39 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 6,
   },
+  cardTitleDisabled: {
+    color: "#757575",
+    fontSize: 15,
+    fontWeight: "900",
+    textAlign: "center",
+    marginBottom: 4,
+  },
+  cardTextDisabled: {
+    color: "#777777",
+    fontSize: 11,
+    lineHeight: 14,
+    fontWeight: "600",
+    textAlign: "center",
+    marginBottom: 6,
+  },
   playButton: {
     backgroundColor: "#2E7D6B",
     borderRadius: 12,
     paddingVertical: 6,
     marginBottom: 6,
   },
-  disabledButton: {
-    backgroundColor: "rgba(18,60,105,0.35)",
+  comingSoonBadge: {
+    backgroundColor: "#D6D6D6",
     borderRadius: 12,
     paddingVertical: 6,
     marginBottom: 6,
+    alignItems: "center",
+  },
+  comingSoonText: {
+    color: "#555555",
+    fontSize: 10,
+    fontWeight: "900",
+    letterSpacing: 1,
   },
   buttonText: {
     color: "white",
@@ -182,20 +204,28 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     textAlign: "center",
   },
+  infoButtonDisabled: {
+    backgroundColor: "#E1E1E1",
+    borderRadius: 12,
+    paddingVertical: 6,
+  },
+  infoButtonTextDisabled: {
+    color: "#777777",
+    fontSize: 11,
+    fontWeight: "900",
+    textAlign: "center",
+  },
   noticeBox: {
-    marginTop: 16,
-    marginBottom: 16,
-    backgroundColor: "rgba(255,255,255,0.92)",
-    borderRadius: 18,
-    padding: 16,
-    borderWidth: 3,
-    borderColor: "#123C69",
+    marginTop: 4,
+    marginBottom: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
   },
   noticeText: {
-    color: "#123C69",
-    fontSize: 17,
-    lineHeight: 22,
-    fontWeight: "900",
+    color: "#667780",
+    fontSize: 14,
+    lineHeight: 20,
+    fontWeight: "600",
     textAlign: "center",
   },
   scoreboardBox: {

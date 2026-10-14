@@ -210,26 +210,54 @@ export default function Index() {
 
         {/* ========== Why Mosaic Exists – Compact Dropdown ========== */}
         <View style={{ width: "100%", alignItems: "center", marginTop: 28 }}>
-          <TouchableOpacity
-            onPress={() => setWhyExpanded(!whyExpanded)}
-            activeOpacity={0.7}
-            style={[
-              styles.smallFooterButton,
-              {
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 6,
-                marginBottom: whyExpanded ? 10 : 0,
-              },
-            ]}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: whyExpanded ? 10 : 0,
+            }}
           >
-            <Text style={styles.smallFooterButtonText}>Why Mosaic Exists</Text>
-            <Ionicons
-              name={whyExpanded ? "chevron-up" : "chevron-down"}
-              size={14}
-              color="#177F69"
-            />
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => setWhyExpanded(!whyExpanded)}
+              activeOpacity={0.7}
+              style={[
+                styles.smallFooterButton,
+                {
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 6,
+                  marginBottom: 0,
+                },
+              ]}
+            >
+              <Text style={styles.smallFooterButtonText}>Why Mosaic Exists</Text>
+              <Ionicons
+                name={whyExpanded ? "chevron-up" : "chevron-down"}
+                size={14}
+                color="#177F69"
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.smallFooterButton,
+                {
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 5,
+                  marginBottom: 0,
+                },
+              ]}
+              onPress={() => router.push("/faq")}
+              accessibilityRole="button"
+              accessibilityLabel="Frequently Asked Questions"
+            >
+              <Ionicons name="help-circle-outline" size={15} color="#177F69" />
+              <Text style={styles.smallFooterButtonText}>FAQ</Text>
+            </TouchableOpacity>
+          </View>
 
           {whyExpanded && (
             <View

@@ -10,25 +10,9 @@ import {
 } from "react-native";
 
 export default function Chat() {
-  const [isSignedIn, setIsSignedIn] = useState(false);
-  const [ageGroup, setAgeGroup] = useState<"under18" | "over18" | null>(null);
+  const [isSignedIn] = useState(false);
+  const [ageGroup] = useState<"under18" | "over18" | null>(null);
   const [message, setMessage] = useState("");
-
-  function handleSignIn(group: "under18" | "over18") {
-    Alert.alert(
-      "Sign in",
-      "Sign-in will be connected later. For now this unlocks the chat screen.",
-      [
-        {
-          text: "Continue",
-          onPress: () => {
-            setAgeGroup(group);
-            setIsSignedIn(true);
-          },
-        },
-      ]
-    );
-  }
 
   function sendMessage() {
     if (!message.trim()) return;
@@ -80,17 +64,17 @@ export default function Chat() {
             {/* 18+ */}
             <View
               style={{
-                backgroundColor: "rgba(255,255,255,0.92)",
+                backgroundColor: "rgba(235,235,235,0.95)",
                 borderRadius: 22,
                 padding: 22,
-                borderWidth: 2,
-                borderColor: "#123C69",
+                borderWidth: 1,
+                borderColor: "#BDBDBD",
                 marginBottom: 16,
               }}
             >
               <Text
                 style={{
-                  color: "#123C69",
+                  color: "#757575",
                   fontSize: 20,
                   fontWeight: "900",
                   textAlign: "center",
@@ -100,9 +84,23 @@ export default function Chat() {
                 18+
               </Text>
 
+              <View
+                style={{
+                  backgroundColor: "#D6D6D6",
+                  borderRadius: 12,
+                  paddingVertical: 10,
+                  alignItems: "center",
+                  marginBottom: 12,
+                }}
+              >
+                <Text style={{ color: "#555555", fontSize: 13, fontWeight: "900", letterSpacing: 1 }}>
+                  COMING SOON
+                </Text>
+              </View>
+
               <Text
                 style={{
-                  color: "#263238",
+                  color: "#777777",
                   fontSize: 15,
                   lineHeight: 23,
                   textAlign: "center",
@@ -113,15 +111,17 @@ export default function Chat() {
               </Text>
 
               <TouchableOpacity
-                onPress={() => handleSignIn("over18")}
+                disabled
                 style={{
-                  backgroundColor: "#123C69",
+                  backgroundColor: "#D0D0D0",
                   borderRadius: 18,
                   paddingVertical: 14,
                   alignItems: "center",
                 }}
+                accessibilityRole="button"
+                accessibilityState={{ disabled: true }}
               >
-                <Text style={{ color: "#ffffff", fontSize: 17, fontWeight: "900" }}>
+                <Text style={{ color: "#777777", fontSize: 17, fontWeight: "900" }}>
                   Sign in / Sign up
                 </Text>
               </TouchableOpacity>
@@ -130,16 +130,16 @@ export default function Chat() {
             {/* Up to 17 */}
             <View
               style={{
-                backgroundColor: "rgba(255,255,255,0.92)",
+                backgroundColor: "rgba(235,235,235,0.95)",
                 borderRadius: 22,
                 padding: 22,
-                borderWidth: 2,
-                borderColor: "#2E7D6B",
+                borderWidth: 1,
+                borderColor: "#BDBDBD",
               }}
             >
               <Text
                 style={{
-                  color: "#2E7D6B",
+                  color: "#757575",
                   fontSize: 20,
                   fontWeight: "900",
                   textAlign: "center",
@@ -149,9 +149,23 @@ export default function Chat() {
                 Up to 17
               </Text>
 
+              <View
+                style={{
+                  backgroundColor: "#D6D6D6",
+                  borderRadius: 12,
+                  paddingVertical: 10,
+                  alignItems: "center",
+                  marginBottom: 12,
+                }}
+              >
+                <Text style={{ color: "#555555", fontSize: 13, fontWeight: "900", letterSpacing: 1 }}>
+                  COMING SOON
+                </Text>
+              </View>
+
               <Text
                 style={{
-                  color: "#263238",
+                  color: "#777777",
                   fontSize: 15,
                   lineHeight: 23,
                   textAlign: "center",
@@ -162,15 +176,17 @@ export default function Chat() {
               </Text>
 
               <TouchableOpacity
-                onPress={() => handleSignIn("under18")}
+                disabled
                 style={{
-                  backgroundColor: "#2E7D6B",
+                  backgroundColor: "#D0D0D0",
                   borderRadius: 18,
                   paddingVertical: 14,
                   alignItems: "center",
                 }}
+                accessibilityRole="button"
+                accessibilityState={{ disabled: true }}
               >
-                <Text style={{ color: "#ffffff", fontSize: 17, fontWeight: "900" }}>
+                <Text style={{ color: "#777777", fontSize: 17, fontWeight: "900" }}>
                   Sign in / Sign up
                 </Text>
               </TouchableOpacity>

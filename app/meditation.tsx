@@ -1,20 +1,20 @@
 import { Ionicons } from "@expo/vector-icons";
 import {
-    setAudioModeAsync,
-    useAudioPlayer,
-    useAudioPlayerStatus,
+  setAudioModeAsync,
+  useAudioPlayer,
+  useAudioPlayerStatus,
 } from "expo-audio";
 import { useEffect, useState } from "react";
 import {
-    Alert,
-    BackHandler,
-    ImageBackground,
-    Linking,
-    Modal,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  BackHandler,
+  ImageBackground,
+  Linking,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 const GROUP_DURATION_SECONDS = 4 * 60;
@@ -22,7 +22,6 @@ const PRESENT_WINDOW_SECONDS = 3 * 60;
 const PERSONAL_DURATION_SECONDS = 4 * 60;
 
 const AUDIO_PLAYER_OPTIONS = {
-  downloadFirst: true,
   updateInterval: 500,
 };
 
@@ -122,6 +121,70 @@ function openLink(url: string) {
   });
 }
 
+function InfoRow({ label, value }: { label: string; value: string }) {
+  return (
+    <View
+      style={{
+        backgroundColor: "rgba(18,60,105,0.06)",
+        borderRadius: 14,
+        padding: 12,
+        marginBottom: 10,
+      }}
+    >
+      <Text style={{ color: "#00A99D", fontSize: 13, fontWeight: "900", marginBottom: 3 }}>
+        {label}
+      </Text>
+      <Text style={{ color: "#123C69", fontSize: 16, fontWeight: "700", lineHeight: 22 }}>
+        {value}
+      </Text>
+    </View>
+  );
+}
+
+function SoundInfoModal({
+  soundInfo,
+  onClose,
+}: {
+  soundInfo: SoundInfo | null;
+  onClose: () => void;
+}) {
+  return (
+    <Modal
+      visible={soundInfo !== null}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
+      <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.45)", justifyContent: "center", padding: 24 }}>
+        <View style={{ backgroundColor: "rgba(255,255,255,0.97)", borderRadius: 24, padding: 22, borderWidth: 2, borderColor: "#00A99D" }}>
+          <Text style={{ color: "#123C69", fontSize: 25, fontWeight: "900", textAlign: "center", marginBottom: 6 }}>
+            Sound Details
+          </Text>
+          <Text style={{ color: "#263238", fontSize: 15, textAlign: "center", marginBottom: 18 }}>
+            Credit and licence information
+          </Text>
+          {soundInfo && (
+            <>
+              <InfoRow label="Title" value={soundInfo.title} />
+              <InfoRow label="Creator" value={soundInfo.creator} />
+              <InfoRow label="Source" value={soundInfo.source} />
+              <InfoRow label="Licence" value={soundInfo.licence} />
+              <InfoRow label="Style" value={soundInfo.style} />
+              <InfoRow label="File" value={soundInfo.fileName} />
+            </>
+          )}
+          <TouchableOpacity
+            onPress={onClose}
+            style={{ backgroundColor: "#00A99D", borderRadius: 18, paddingVertical: 13, alignItems: "center", marginTop: 8 }}
+          >
+            <Text style={{ color: "#ffffff", fontSize: 17, fontWeight: "900" }}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
 export default function Meditation() {
   const [now, setNow] = useState(new Date());
   const [markedPresent, setMarkedPresent] = useState(false);
@@ -133,7 +196,6 @@ export default function Meditation() {
   );
 
   const [openSection, setOpenSection] = useState<SectionName | null>(null);
-  const [showMusicList, setShowMusicList] = useState(false);
   const [activeTrack, setActiveTrack] = useState<string | null>(null);
   const [selectedSoundInfo, setSelectedSoundInfo] =
     useState<SoundInfo | null>(null);
@@ -236,8 +298,8 @@ export default function Meditation() {
         setSelectedSoundInfo(null);
         return true;
       }
-      if (showMusicList) {
-        setShowMusicList(false);
+      if (openSection === "sounds") {
+        setOpenSection(null);
         return true;
       }
       return false;
@@ -247,7 +309,7 @@ export default function Meditation() {
       backAction
     );
     return () => backHandler.remove();
-  }, [showMusicList, selectedSoundInfo]);
+  }, [openSection, selectedSoundInfo]);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
@@ -324,75 +386,17 @@ export default function Meditation() {
     setPersonalSecondsLeft(PERSONAL_DURATION_SECONDS);
   }
 
-  function InfoRow({ label, value }: { label: string; value: string }) {
-    return (
-      <View
-        style={{
-          backgroundColor: "rgba(18,60,105,0.06)",
-          borderRadius: 14,
-          padding: 12,
-          marginBottom: 10,
-        }}
-      >
-        <Text style={{ color: "#00A99D", fontSize: 13, fontWeight: "900", marginBottom: 3 }}>
-          {label}
-        </Text>
-        <Text style={{ color: "#123C69", fontSize: 16, fontWeight: "700", lineHeight: 22 }}>
-          {value}
-        </Text>
-      </View>
-    );
-  }
-
-  function SoundInfoModal() {
-    return (
-      <Modal
-        visible={selectedSoundInfo !== null}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setSelectedSoundInfo(null)}
-      >
-        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.45)", justifyContent: "center", padding: 24 }}>
-          <View style={{ backgroundColor: "rgba(255,255,255,0.97)", borderRadius: 24, padding: 22, borderWidth: 2, borderColor: "#00A99D" }}>
-            <Text style={{ color: "#123C69", fontSize: 25, fontWeight: "900", textAlign: "center", marginBottom: 6 }}>
-              Sound Details
-            </Text>
-            <Text style={{ color: "#263238", fontSize: 15, textAlign: "center", marginBottom: 18 }}>
-              Credit and licence information
-            </Text>
-            {selectedSoundInfo && (
-              <>
-                <InfoRow label="Title" value={selectedSoundInfo.title} />
-                <InfoRow label="Creator" value={selectedSoundInfo.creator} />
-                <InfoRow label="Source" value={selectedSoundInfo.source} />
-                <InfoRow label="Licence" value={selectedSoundInfo.licence} />
-                <InfoRow label="Style" value={selectedSoundInfo.style} />
-                <InfoRow label="File" value={selectedSoundInfo.fileName} />
-              </>
-            )}
-            <TouchableOpacity
-              onPress={() => setSelectedSoundInfo(null)}
-              style={{ backgroundColor: "#00A99D", borderRadius: 18, paddingVertical: 13, alignItems: "center", marginTop: 8 }}
-            >
-              <Text style={{ color: "#ffffff", fontSize: 17, fontWeight: "900" }}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-    );
-  }
-
   function SoundCard({
     title,
     subtitle,
-    fileName,
+    isLoaded,
     isPlaying,
     onPlay,
     onInfo,
   }: {
     title: string;
     subtitle: string;
-    fileName: string;
+    isLoaded: boolean;
     isPlaying: boolean;
     onPlay: () => void;
     onInfo: () => void;
@@ -401,13 +405,15 @@ export default function Meditation() {
       <View style={{ backgroundColor: "rgba(255,255,255,0.88)", borderWidth: 1, borderColor: "rgba(18,60,105,0.22)", borderRadius: 18, padding: 16, marginBottom: 14 }}>
         <Text style={{ color: "#123C69", fontSize: 19, fontWeight: "900", marginBottom: 5 }}>{title}</Text>
         <Text style={{ color: "#263238", fontSize: 15, lineHeight: 22, marginBottom: 6 }}>{subtitle}</Text>
-        <Text style={{ color: "#5f6f75", fontSize: 13, marginBottom: 14 }}>File: {fileName}</Text>
         <View style={{ flexDirection: "row", gap: 10 }}>
           <TouchableOpacity
             onPress={onPlay}
+            disabled={!isLoaded}
             style={{ flex: 1, backgroundColor: isPlaying ? "#C0392B" : "#00A99D", borderRadius: 16, paddingVertical: 12, alignItems: "center" }}
+            accessibilityRole="button"
+            accessibilityState={{ disabled: !isLoaded, selected: isPlaying }}
           >
-            <Text style={{ color: "#ffffff", fontSize: 16, fontWeight: "900" }}>{isPlaying ? "Pause" : "Play"}</Text>
+            <Text style={{ color: "#ffffff", fontSize: 16, fontWeight: "900" }}>{isLoaded ? (isPlaying ? "Pause" : "Play") : "Loading..."}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={onInfo}
@@ -673,30 +679,17 @@ export default function Meditation() {
 
         {/* Free Sounds */}
         <SectionDropdown title="Free Sounds" description="Choose a sound for meditation, breathing, or rest." section="sounds" titleColour="#9B51E0">
-          <TouchableOpacity
-            onPress={() => setShowMusicList((current) => !current)}
-            style={{ backgroundColor: "#9B51E0", borderRadius: 18, paddingVertical: 13, alignItems: "center", marginBottom: showMusicList ? 16 : 0 }}
-          >
-            <Text style={{ color: "#ffffff", fontSize: 17, fontWeight: "900" }}>
-              {showMusicList ? "Hide Sounds" : "Show Sounds"}
-            </Text>
+          <SoundCard title="Bell 1" subtitle="Singing bowl / meditation bell / ambient relaxation audio." isLoaded={bell1Status.isLoaded} isPlaying={bell1Status.playing || activeTrack === "bell1"} onPlay={() => playTrack("bell1", bell1Player, bell1Status.playing)} onInfo={() => setSelectedSoundInfo(soundInfos.bell1)} />
+          <SoundCard title="Bell 2" subtitle="A second bell sound for quiet moments." isLoaded={bell2Status.isLoaded} isPlaying={bell2Status.playing || activeTrack === "bell2"} onPlay={() => playTrack("bell2", bell2Player, bell2Status.playing)} onInfo={() => setSelectedSoundInfo(soundInfos.bell2)} />
+          <SoundCard title="Jungle Rain" subtitle="Rain and nature sound for calm background listening." isLoaded={rainStatus.isLoaded} isPlaying={rainStatus.playing || activeTrack === "rain"} onPlay={() => playTrack("rain", rainPlayer, rainStatus.playing)} onInfo={() => setSelectedSoundInfo(soundInfos.rain)} />
+          <SoundCard title="Music" subtitle="Music track for relaxation or meditation." isLoaded={musStatus.isLoaded} isPlaying={musStatus.playing || activeTrack === "mus"} onPlay={() => playTrack("mus", musPlayer, musStatus.playing)} onInfo={() => setSelectedSoundInfo(soundInfos.mus)} />
+          <TouchableOpacity onPress={stopAllMusic} style={{ backgroundColor: "#C0392B", borderRadius: 18, paddingVertical: 13, alignItems: "center", marginTop: 4 }}>
+            <Text style={{ color: "#ffffff", fontSize: 17, fontWeight: "900" }}>Stop All Sounds</Text>
           </TouchableOpacity>
+        </SectionDropdown>
 
-          {showMusicList && (
-            <>
-              <SoundCard title="Bell 1" subtitle="Singing bowl / meditation bell / ambient relaxation audio." fileName="bell1.mp3" isPlaying={bell1Status.playing || activeTrack === "bell1"} onPlay={() => playTrack("bell1", bell1Player, bell1Status.playing)} onInfo={() => setSelectedSoundInfo(soundInfos.bell1)} />
-              <SoundCard title="Bell 2" subtitle="A second bell sound for quiet moments." fileName="bell2.wav" isPlaying={bell2Status.playing || activeTrack === "bell2"} onPlay={() => playTrack("bell2", bell2Player, bell2Status.playing)} onInfo={() => setSelectedSoundInfo(soundInfos.bell2)} />
-              <SoundCard title="Jungle Rain" subtitle="Rain and nature sound for calm background listening." fileName="jungle-rain.mp3" isPlaying={rainStatus.playing || activeTrack === "rain"} onPlay={() => playTrack("rain", rainPlayer, rainStatus.playing)} onInfo={() => setSelectedSoundInfo(soundInfos.rain)} />
-              <SoundCard title="Mus" subtitle="Music track for relaxation or meditation." fileName="mus.mp3" isPlaying={musStatus.playing || activeTrack === "mus"} onPlay={() => playTrack("mus", musPlayer, musStatus.playing)} onInfo={() => setSelectedSoundInfo(soundInfos.mus)} />
-              <TouchableOpacity onPress={stopAllMusic} style={{ backgroundColor: "#C0392B", borderRadius: 18, paddingVertical: 13, alignItems: "center", marginTop: 4 }}>
-                <Text style={{ color: "#ffffff", fontSize: 17, fontWeight: "900" }}>Stop All Sounds</Text>
-              </TouchableOpacity>
-            </>
-          )}
-
-          <Text style={{ color: "#123C69", fontSize: 16, fontWeight: "800", marginTop: 20, marginBottom: 10, textAlign: "center" }}>
-            Other Quiet Options
-          </Text>
+        {/* More Ways to Settle */}
+        <SectionDropdown title="More Ways to Settle" description="Simple techniques you can try right now." section="settle" titleColour="#2E7D6B">
           <TechniqueCard
             title="UCLA Mindful"
             titleColour="#1F9BBF"
@@ -711,10 +704,6 @@ export default function Meditation() {
             link="https://www.freemindfulness.org/download"
             linkLabel="Open Free Mindfulness"
           />
-        </SectionDropdown>
-
-        {/* More Ways to Settle */}
-        <SectionDropdown title="More Ways to Settle" description="Simple techniques you can try right now." section="settle" titleColour="#2E7D6B">
           <TechniqueCard
             title="Box Breathing"
             titleColour="#1F9BBF"
@@ -807,7 +796,10 @@ export default function Meditation() {
         </View>
       </ScrollView>
 
-      <SoundInfoModal />
+      <SoundInfoModal
+        soundInfo={selectedSoundInfo}
+        onClose={() => setSelectedSoundInfo(null)}
+      />
     </ImageBackground>
   );
 }
